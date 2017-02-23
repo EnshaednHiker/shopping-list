@@ -27,12 +27,13 @@ $('.shopping-list-add').submit(function(event) {
 
 //single state object
 var shoppingList = {
-    items:[]
+    items:['apples', 'oranges', 'milk', 'bread']
 };
 
 //state modification functions
 function addItem (singleItem){
     shoppingList.items.push(singleItem);
+    
 } 
 
 function removeItem (singleItem){
@@ -40,17 +41,53 @@ function removeItem (singleItem){
     shoppingList.items.splice(indexPosition, 1);
 }
 
-function testFunctions (){
-    addItem("grapefruit");
-    console.log(shoppingList);
-    addItem("salad dressing");
-    console.log(shoppingList);
-    removeItem("grapefruit");
-    console.log(shoppingList);
+//render function
+function renderItem (item){
+    var itemHTML = '' + item;
+    var listItemHTML = '<li class="js-shopping-item"><span class="shopping-item">'+ itemHTML +'</span><div class="shopping-item-controls"><button class="shopping-item-toggle"><span class="button-label">check</span></button> <button class="shopping-item-delete"><span'  + ' class="button-label">delete</span></button></div></li>';   
+    
+    return $(listItemHTML); 
+}
+//Event listeners
+
+function addShoppingItem() {
+    var htmlItem = "";
+    var item = "";
+    $('#js-shopping-list-form').submit(function (event) {
+
+        event.preventDefault();
+
+        item = $("#shopping-list-entry").val();
+        addItem(item);
+        htmlItem = renderItem(item);
+
+        $('.shopping-list').append(htmlItem);
+
+        console.log(htmlItem);
+        $("#shopping-list-entry").val('');
+    });
 }
 
-testFunctions()
+function checkItem() {
+    var toggleButtonTest = $("ul").on('click', '.shopping-item-toggle', function () {
+        //event.preventDefault();
+        $(this).closest(".js-shopping-item").find('.shopping-item').toggleClass('shopping-item__checked');
+        console.log(toggleButtonTest);
+    });
+}
 
+function deleteItem() {
+    var deleteButtonTest = $("ul").on('click', ".shopping-item-delete", function () {
+        //event.preventDefault();
+        var thisItem = $(this).closest(".shopping-item").text();
+        removeItem(thisItem);
 
-
+        $(this).closest(".js-shopping-item").empty();
+        $('ul li:empty').remove();
+        console.log(deleteButtonTest);
+    });
+}
+$(addShoppingItem)
+$(checkItem)
+$(deleteItem)
 
