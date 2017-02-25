@@ -25,21 +25,16 @@ $('.shopping-list-add').submit(function(event) {
 });
 */
 
-//single state object
-var shoppingList = {
-    items:['apples', 'oranges', 'milk', 'bread']
-};
+// single state object
+// var shoppingList = {
+//     items:['apples', 'oranges', 'milk', 'bread']
+// };
+var shoppingList = new ShoppingList (['apples', 'oranges', 'milk', 'bread']);
+
 
 //state modification functions
-function addItem (singleItem){
-    shoppingList.items.push(singleItem);
-    
-} 
 
-function removeItem (singleItem){
-    var indexPosition = shoppingList.items.indexOf(singleItem);
-    shoppingList.items.splice(indexPosition, 1);
-}
+
 
 //render function
 function renderItem (item){
@@ -58,7 +53,7 @@ function addShoppingItem() {
         event.preventDefault();
 
         item = $("#shopping-list-entry").val();
-        addItem(item);
+        shoppingList.add(item);
         htmlItem = renderItem(item);
 
         $('.shopping-list').append(htmlItem);
@@ -80,11 +75,11 @@ function deleteItem() {
     var deleteButtonTest = $("ul").on('click', ".shopping-item-delete", function () {
         //event.preventDefault();
         var thisItem = $(this).closest(".shopping-item").text();
-        removeItem(thisItem);
+        shoppingList.remove(thisItem);
 
         $(this).closest(".js-shopping-item").empty();
         $('ul li:empty').remove();
-        console.log(deleteButtonTest);
+        console.log(shoppingList.get)
     });
 }
 $(addShoppingItem)
